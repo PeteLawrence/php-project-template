@@ -73,7 +73,7 @@
 
  <target name="phpmd"
          description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="phpmd">
+  <exec executable="src/vendor/bin/phpmd">
    <arg path="${basedir}/src" />
    <arg value="text" />
    <arg value="${basedir}/build/phpmd.xml" />
@@ -81,7 +81,7 @@
  </target>
 
  <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-  <exec executable="phpmd">
+  <exec executable="src/vendor/bin/phpmd">
    <arg path="${basedir}/src" />
    <arg value="xml" />
    <arg value="${basedir}/build/phpmd.xml" />
@@ -92,34 +92,38 @@
 
  <target name="phpcs"
          description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="phpcs">
-   <arg value="--standard=${basedir}/build/phpcs.xml" />
+  <exec executable="src/vendor/bin/phpcs">
    <arg path="${basedir}/src" />
+   <arg value="--ignore=*/vendor/*" />
   </exec>
  </target>
 
  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-  <exec executable="phpcs" output="/dev/null">
+  <exec executable="src/vendor/bin/phpcs" output="/dev/null">
    <arg value="--report=checkstyle" />
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
-   <arg value="--standard=${basedir}/build/phpcs.xml" />
    <arg path="${basedir}/src" />
+   <arg value="--ignore=*/vendor/*" />
   </exec>
  </target>
 
  <target name="phpcpd" description="Find duplicate code using PHPCPD">
-  <exec executable="phpcpd">
+  <exec executable="src/vendor/bin/phpcpd">
    <arg value="--log-pmd" />
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />
+   <arg value="--exclude=vendor" />
    <arg path="${basedir}/src" />
   </exec>
  </target>
 
  <target name="phpdox" description="Generate API documentation using phpDox">
-  <exec executable="phpdox"/>
+  <exec executable="src/vendor/bin/phpdox"/>
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
-  <exec executable="phpunit" failonerror="true"/>
+  <exec executable="src/vendor/bin/phpunit" failonerror="true">
+    <arg value="-c" />
+    <arg value="${basedir}/build" />
+  </exec>
  </target>
 </project>
