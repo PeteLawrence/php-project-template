@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project name="name-of-project" default="build">
  <target name="build"
-   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpdox,phpunit"/>
+   depends="prepare,lint,phploc,pdepend,phpmd-ci,phpcs-ci,phpcpd,phpunit,phpdox"/>
 
  <target name="build-parallel"
    depends="prepare,lint,tools-parallel,phpunit"/>
@@ -56,6 +56,8 @@
    <arg value="--count-tests" />
    <arg value="--log-csv" />
    <arg value="${basedir}/build/logs/phploc.csv" />
+   <arg value="--log-xml" />
+   <arg value="${basedir}/build/logs/phploc.xml" />
    <arg value="--exclude" />
    <arg value="vendor" />
    <arg path="${basedir}/src" />
@@ -63,7 +65,7 @@
  </target>
 
  <target name="pdepend" description="Calculate software metrics using PHP_Depend">
-  <exec executable="pdepend">
+  <exec executable="src/vendor/bin/pdepend">
    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
@@ -77,6 +79,8 @@
    <arg path="${basedir}/src" />
    <arg value="text" />
    <arg value="${basedir}/build/phpmd.xml" />
+   <arg value="--exclude" />
+   <arg value="vendor" />
   </exec>
  </target>
 
@@ -117,7 +121,10 @@
  </target>
 
  <target name="phpdox" description="Generate API documentation using phpDox">
-  <exec executable="src/vendor/bin/phpdox"/>
+  <exec executable="src/vendor/bin/phpdox">
+    <arg value="-f"/>
+    <arg value="${basedir}/build/phpdox.xml" />
+  </exec>
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
