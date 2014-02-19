@@ -1,4 +1,19 @@
 {
+    "name": "PeteLawrence/php-project-template",
+    "description": "A starting point for PHP projects that want to make use of continuous integration tools.",
+    "keywords": ["continuous", "integration", "jenkins", "phpunit", "vagrant"],
+    "homepage": "https://github.com/PeteLawrence/php-project-template",
+    "authors": [
+        {
+            "name": "Pete Lawrence",
+            "email": "petejlawrence@icloud.com",
+            "role": "Developer"
+        }
+    ],
+    "support": {
+        "issues": "https://github.com/PeteLawrence/php-project-template/issues",
+        "source": "https://github.com/PeteLawrence/php-project-template"
+    },
     "require-dev": {
         "phpunit/phpunit": "4.0.*@dev",
         "phpunit/php-code-coverage": "2.0.*@dev",
