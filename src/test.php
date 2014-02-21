@@ -22,7 +22,7 @@
  * @license   All rights reserved
  * @link      http://www.carltonsoftware.co.uk
  */
-class Demo
+class HelloWorld
 {
 
     /**
@@ -30,13 +30,9 @@ class Demo
      *
      * @return void
      */
-    public function hello()
+    public function getMessage()
     {
-        print 'hello world';
+        return 'Hello World!';
     }
 
 }
-
-
-$demo = new Demo();
-$demo->hello();
