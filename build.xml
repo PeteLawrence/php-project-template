@@ -64,8 +64,8 @@
   </exec>
  </target>
 
- <target name="pdepend" description="Calculate software metrics using PHP_Depend">
-  <exec executable="src/vendor/bin/pdepend">
+ <target name="pdepend" description="Calculate software metrics using PHP_Depend" depends="pdepend-fix-search-path">
+  <exec executable="src/bin/pdepend" dir="${basedir}/src/vendor/pdepend/pdepend">
    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
@@ -134,4 +134,21 @@
     <arg value="${basedir}/build" />
   </exec>
  </target>
+
+ <target name="pdepend-fix-search-path" description="Patches pdepend to look in the correct place got autoload.php" unless="pdepend-fix-has-been-applied">
+  <exec executable="wget" failonerror="true" dir="${basedir}/src/vendor/pdepend/pdepend">
+    <arg value="https://github.com/pdepend/pdepend/pull/133.diff" />
+  </exec>
+  <exec executable="patch" failonerror="true" dir="${basedir}/src/vendor/pdepend/pdepend">
+    <arg value="-p1" />
+    <arg value="&lt;133.diff" />
+  </exec>
+ </target>
+
+ <target name="pdepend-fix-has-been-applied">
+  <condition>
+    <available file="${basedir}/src/vendor/pdepend/pdepend/133.diff" />
+  </condition>
+</target>
+
 </project>
