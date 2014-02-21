@@ -135,18 +135,20 @@
   </exec>
  </target>
 
- <target name="pdepend-fix-search-path" description="Patches pdepend to look in the correct place got autoload.php" unless="pdepend-fix-has-been-applied">
+ <target name="pdepend-fix-search-path" description="Patches pdepend to look in the correct place got autoload.php" depends="pdepend-check-fix-has-been-applied" unless="pdepend-fix-has-been-applied">
+  <echo message="Applying patch to pdepend" />
   <exec executable="wget" failonerror="true" dir="${basedir}/src/vendor/pdepend/pdepend">
     <arg value="https://github.com/pdepend/pdepend/pull/133.diff" />
   </exec>
   <exec executable="patch" failonerror="true" dir="${basedir}/src/vendor/pdepend/pdepend">
     <arg value="-p1" />
-    <arg value="&lt;133.diff" />
+    <arg value="-i" />
+    <arg value="133.diff" />
   </exec>
  </target>
 
- <target name="pdepend-fix-has-been-applied">
-  <condition>
+ <target name="pdepend-check-fix-has-been-applied">
+  <condition property="pdepend-fix-has-been-applied">
     <available file="${basedir}/src/vendor/pdepend/pdepend/133.diff" />
   </condition>
 </target>
