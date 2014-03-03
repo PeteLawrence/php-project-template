@@ -52,86 +52,76 @@
  </target>
 
  <target name="phploc" description="Measure project size using PHPLOC">
-  <exec executable="src/vendor/bin/phploc">
+  <exec executable="vendor/bin/phploc">
    <arg value="--count-tests" />
    <arg value="--log-csv" />
    <arg value="${basedir}/build/logs/phploc.csv" />
    <arg value="--log-xml" />
    <arg value="${basedir}/build/logs/phploc.xml" />
-   <arg value="--exclude" />
-   <arg value="vendor" />
    <arg path="${basedir}/src" />
   </exec>
  </target>
 
  <target name="pdepend" description="Calculate software metrics using PHP_Depend" depends="pdepend-fix-search-path">
-  <exec executable="src/bin/pdepend" dir="${basedir}/src/vendor/pdepend/pdepend">
+  <exec executable="src/bin/pdepend" dir="${basedir}/vendor/pdepend/pdepend">
    <arg value="--jdepend-xml=${basedir}/build/logs/jdepend.xml" />
    <arg value="--jdepend-chart=${basedir}/build/pdepend/dependencies.svg" />
    <arg value="--overview-pyramid=${basedir}/build/pdepend/overview-pyramid.svg" />
-   <arg value="--ignore=${basedir}/src/vendor" />
    <arg path="${basedir}/src" />
   </exec>
  </target>
 
  <target name="phpmd"
          description="Perform project mess detection using PHPMD and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="src/vendor/bin/phpmd">
+  <exec executable="vendor/bin/phpmd">
    <arg path="${basedir}/src" />
    <arg value="text" />
    <arg value="${basedir}/build/phpmd.xml" />
-   <arg value="--exclude" />
-   <arg value="${basedir}/src/vendor" />
   </exec>
  </target>
 
  <target name="phpmd-ci" description="Perform project mess detection using PHPMD creating a log file for the continuous integration server">
-  <exec executable="src/vendor/bin/phpmd">
+  <exec executable="vendor/bin/phpmd">
    <arg path="${basedir}/src" />
    <arg value="xml" />
    <arg value="${basedir}/build/phpmd.xml" />
    <arg value="--reportfile" />
    <arg value="${basedir}/build/logs/pmd.xml" />
-   <arg value="--exclude" />
-   <arg value="${basedir}/src/vendor" />
   </exec>
  </target>
 
  <target name="phpcs"
          description="Find coding standard violations using PHP_CodeSniffer and print human readable output. Intended for usage on the command line before committing.">
-  <exec executable="src/vendor/bin/phpcs">
+  <exec executable="vendor/bin/phpcs">
    <arg path="${basedir}/src" />
-   <arg value="--ignore=*/vendor/*" />
   </exec>
  </target>
 
  <target name="phpcs-ci" description="Find coding standard violations using PHP_CodeSniffer creating a log file for the continuous integration server">
-  <exec executable="src/vendor/bin/phpcs" output="/dev/null">
+  <exec executable="vendor/bin/phpcs" output="/dev/null">
    <arg value="--report=checkstyle" />
    <arg value="--report-file=${basedir}/build/logs/checkstyle.xml" />
    <arg path="${basedir}/src" />
-   <arg value="--ignore=*/vendor/*" />
   </exec>
  </target>
 
  <target name="phpcpd" description="Find duplicate code using PHPCPD">
-  <exec executable="src/vendor/bin/phpcpd">
+  <exec executable="vendor/bin/phpcpd">
    <arg value="--log-pmd" />
    <arg value="${basedir}/build/logs/pmd-cpd.xml" />
-   <arg value="--exclude=vendor" />
    <arg path="${basedir}/src" />
   </exec>
  </target>
 
  <target name="phpdox" description="Generate API documentation using phpDox">
-  <exec executable="src/vendor/bin/phpdox">
+  <exec executable="vendor/bin/phpdox">
     <arg value="-f"/>
     <arg value="${basedir}/build/phpdox.xml" />
   </exec>
  </target>
 
  <target name="phpunit" description="Run unit tests with PHPUnit">
-  <exec executable="src/vendor/bin/phpunit" failonerror="true">
+  <exec executable="vendor/bin/phpunit" failonerror="true">
     <arg value="-c" />
     <arg value="${basedir}/build" />
   </exec>
@@ -139,10 +129,10 @@
 
  <target name="pdepend-fix-search-path" description="Patches pdepend to look in the correct place got autoload.php" depends="pdepend-check-fix-has-been-applied" unless="pdepend-fix-has-been-applied">
   <echo message="Applying patch to pdepend" />
-  <exec executable="wget" failonerror="true" dir="${basedir}/src/vendor/pdepend/pdepend">
+  <exec executable="wget" failonerror="true" dir="${basedir}/vendor/pdepend/pdepend">
     <arg value="https://github.com/pdepend/pdepend/pull/133.diff" />
   </exec>
-  <exec executable="patch" failonerror="true" dir="${basedir}/src/vendor/pdepend/pdepend">
+  <exec executable="patch" failonerror="true" dir="${basedir}/vendor/pdepend/pdepend">
     <arg value="-p1" />
     <arg value="-i" />
     <arg value="133.diff" />
@@ -151,7 +141,7 @@
 
  <target name="pdepend-check-fix-has-been-applied">
   <condition property="pdepend-fix-has-been-applied">
-    <available file="${basedir}/src/vendor/pdepend/pdepend/133.diff" />
+    <available file="${basedir}/vendor/pdepend/pdepend/133.diff" />
   </condition>
 </target>
 

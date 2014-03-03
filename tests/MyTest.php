@@ -1,6 +1,6 @@
 <?php
 
-require_once 'src/test.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class MyTest extends PHPUnit_Framework_TestCase
 {
@@ -22,7 +22,7 @@ class MyTest extends PHPUnit_Framework_TestCase
      */
     public function testMessage()
     {
-        $helloWorld = new HelloWorld();
+        $helloWorld = new HelloWorld\HelloWorld();
         $this->assertEquals('Hello World!', $helloWorld->getMessage());
     }
 
